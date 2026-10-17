@@ -14,7 +14,7 @@ The application has three main pages:
 
 - Products (http://localhost:8080/products):
   Local tech hardware inventory connected to MySQL.
-  Includes real-time instant search (0ms) and category filter.
+  Includes real-time instant search and category filter.
 
 - Products 1 (http://localhost:8080/products-1):
   Official collectibles department consuming the public Rick and Morty REST API.
@@ -22,7 +22,6 @@ The application has three main pages:
   * Endpoint 2 (/location): Origin manufacturing hub details.
   * Endpoint 3 (/episode): Authenticity certificate with debut episode info.
   * Search Bar: Fixed 4-second delay throttle before triggering search.
-  * Card Interaction: Click card to open specifications; close with "<- Back".
 
 
 2. REQUIREMENTS
@@ -36,10 +35,10 @@ The application has three main pages:
 --------------------------------------------------------------------------------
 Configured in: src/main/resources/application.properties
 
-- Database URL: jdbc:mysql://localhost:3306/inventory_db
-- User: root
-- Password: root (change if your MySQL uses a different password)
-- The database "inventory_db" is created automatically if it does not exist.
+- Database URL: jdbc:mysql://localhost:3306/DB
+- User: <your_mysql_user>
+- Password:<your_mysql_password>
+- The database is created automatically if it does not exist.
 
 
 4. HOW TO RUN THE APPLICATION
