@@ -300,9 +300,9 @@
                                 <strong>Authenticity Cert (Endpoint 3):</strong> <span>Loading certificate...</span>
                             </p>
 
-                            <!-- Button Volver to close description -->
+                            <!-- Button Back to close description -->
                             <div>
-                                <button type="button" class="btn-back">← Volver</button>
+                                <button type="button" class="btn-back">← Back</button>
                             </div>
                         </div>
 
@@ -312,10 +312,10 @@
 
                 // ========================================================
                 // CLICK HANDLER: ONLY OPENS DESCRIPTION (NO CLOSING BY CARD CLICK)
-                // The user is OBLIGATED to use the 'Volver' button to close.
+                // The user is OBLIGATED to use the 'Back' button to close.
                 // ========================================================
                 card.addEventListener("click", function (e) {
-                    // If click was on button 'Volver', ignore here
+                    // If click was on button 'Back', ignore here
                     if (e.target.classList.contains("btn-back")) return;
 
                     const descBox = card.querySelector(".description-box");
@@ -330,7 +330,7 @@
                     }
                 });
 
-                // Button 'Volver': THE EXCLUSIVE WAY TO CLOSE THE DESCRIPTION
+                // Button 'Back': THE EXCLUSIVE WAY TO CLOSE THE DESCRIPTION
                 const btnBack = card.querySelector(".btn-back");
                 btnBack.addEventListener("click", function (e) {
                     e.stopPropagation(); // Stop card click from triggering

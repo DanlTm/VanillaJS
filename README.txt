@@ -22,7 +22,7 @@ The application has three main pages:
   * Endpoint 2 (/location): Origin manufacturing hub details.
   * Endpoint 3 (/episode): Authenticity certificate with debut episode info.
   * Search Bar: Fixed 4-second delay throttle before triggering search.
-  * Card Interaction: Click card to open specifications; close with "<- Volver".
+  * Card Interaction: Click card to open specifications; close with "<- Back".
 
 
 2. REQUIREMENTS
