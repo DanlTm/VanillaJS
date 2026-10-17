@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products | Tech &amp; Gaming Store</title>
+    <!-- 1. TAILWIND CSS (Via CDN for product card modern utility styling) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- 2. Basic CSS Stylesheet (Grid, Flexbox, Media Query, Navbar) -->
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav class="navbar">
+    <a th:href="@{/}" class="brand">Tech &amp; Gaming Store</a>
+    <ul class="nav-links">
+        <li><a th:href="@{/}">Home</a></li>
+        <li><a th:href="@{/products}" class="active">Products</a></li>
+    </ul>
+</nav>
+
+<div class="container">
+
+    <!-- ========================================================
+         1. PAGE HEADER
+         ======================================================== -->
+    <header class="page-header">
+        <h1>Product Catalog</h1>
+        <p>Find computer parts, consoles, laptops, phones, and video games.</p>
+    </header>
+
+    <!-- ========================================================
+         2. LIVE SEARCH BAR (CSS FLEXBOX)
+         ======================================================== -->
+    <section class="search-container">
+        <!-- Text search input with instant 0ms response -->
+        <input type="text"
+               id="live-search-input"
+               class="form-control search-input"
+               placeholder="Search by name, category, or description..."
+               autofocus>
+
+        <!-- Category dropdown filter -->
+        <select id="category-filter" class="category-select">
+            <option value="">All Categories</option>
+            <option th:each="cat : ${categories}"
+                    th:value="${cat.name}"
+                    th:text="${cat.name}">Category</option>
+        </select>
+
+        <!-- Reset button to clear search -->
+        <button type="button" id="btn-reset" class="btn btn-secondary">Reset</button>
+    </section>
+
+    <!-- ========================================================
+         3. PRODUCT COUNTER
+         ======================================================== -->
+    <div class="results-counter">
+        Showing <strong id="visible-count">0</strong> product(s)
+    </div>
+
+    <!-- ========================================================
+         4. PRODUCTS GRID (CSS GRID)
+         ======================================================== -->
+    <main id="products-container" class="products-grid">
+
+        <!-- Individual Product Card (Styled with Tailwind CSS utilities & custom grid) -->
+        <article th:each="p : ${products}"
+                 class="product-card bg-white rounded-xl shadow-sm border border-slate-200 p-4 flex flex-col justify-between hover:shadow-md transition-shadow"
+                 th:attr="data-id=${p.id},
+                          data-name=${p.name},
+                          data-price=${p.price},
+                          data-stock=${p.stock},
+                          data-category=${p.category != null ? p.category.name : 'General'},
+                          data-description=${p.description != null ? p.description : 'High-quality product with official warranty.'}">
+
+            <!-- Card Header: ID and Category -->
+            <div>
+                <div class="card-header-info">
+                    <span class="product-id" th:text="'#' + ${p.id}">#1</span>
+                    <span class="category-badge" th:text="${p.category != null ? p.category.name : 'General'}">Category</span>
+                </div>
+
+                <!-- Product Name -->
+                <h2 class="product-title" th:text="${p.name}">Product Name</h2>
+            </div>
+
+            <!-- Card Footer: Price, Stock, and Description -->
+            <div class="card-footer-info">
+                <div class="price-stock-row">
+                    <span class="product-price" th:text="'$' + ${p.price}">$0.00</span>
+                    <span class="product-stock" th:text="'Stock: ' + ${p.stock} + ' units'">Stock: 10 units</span>
+                </div>
+
+                <!-- Description Box (Shown on hover in PC or tap on mobile) -->
+                <div class="description-box">
+                    <strong>Description:</strong>
+                    <span th:text="${p.description != null ? p.description : 'High-quality product with official warranty.'}">
+                        Product description.
+                    </span>
+                </div>
+
+                <small class="card-hint">Hover or tap to see description</small>
+            </div>
+
+        </article>
+
+    </main>
+
+    <!-- Message when no products match the search -->
+    <div id="no-results" class="no-results-box" style="display: none;">
+        <h3>No products found</h3>
+        <p>Try typing a different word or select All Categories.</p>
+    </div>
+
+</div>
+
+<!-- Footer -->
+<footer>
+    <p>&copy; 2026 Tech &amp; Gaming Store. PC Parts, PlayStation, Laptops, Phones &amp; Video Games.</p>
+</footer>
+
+<!-- ========================================================
+     5. INSTANT LIVE SEARCH (VANILLA JAVASCRIPT)
+     ======================================================== -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        // HTML elements
+        const searchInput = document.getElementById("live-search-input");
+        const categoryFilter = document.getElementById("category-filter");
+        const btnReset = document.getElementById("btn-reset");
+        const visibleCount = document.getElementById("visible-count");
+        const noResults = document.getElementById("no-results");
+        const productCards = document.querySelectorAll(".product-card");
+
+        // Set initial product counter
+        updateCounter();
+
+        // Real-time search listeners (0ms delay)
+        searchInput.addEventListener("input", filterProducts);
+        categoryFilter.addEventListener("change", filterProducts);
+
+        // Reset button click
+        btnReset.addEventListener("click", function () {
+            searchInput.value = "";
+            categoryFilter.value = "";
+            filterProducts();
+            searchInput.focus();
+        });
+
+        // Filter products function
+        function filterProducts() {
+            const query = searchInput.value.toLowerCase().trim();
+            const selectedCategory = categoryFilter.value.toLowerCase().trim();
+            let count = 0;
+
+            productCards.forEach(function (card) {
+                const name = (card.getAttribute("data-name") || "").toLowerCase();
+                const category = (card.getAttribute("data-category") || "").toLowerCase();
+                const description = (card.getAttribute("data-description") || "").toLowerCase();
+
+                // Check text match (name, category, or description)
+                const matchesText = (query === "" || name.includes(query) || category.includes(query) || description.includes(query));
+                // Check category dropdown match
+                const matchesCategory = (selectedCategory === "" || category === selectedCategory);
+
+                if (matchesText && matchesCategory) {
+                    card.style.display = "";
+                    count++;
+                } else {
+                    card.style.display = "none";
+                }
+            });
+
+            // Update counter and no-results box
+            visibleCount.textContent = count;
+            noResults.style.display = (count === 0) ? "block" : "none";
+        }
+
+        function updateCounter() {
+            visibleCount.textContent = productCards.length;
+        }
+
+        // Tap toggle for Android / mobile phones
+        productCards.forEach(function (card) {
+            card.addEventListener("click", function () {
+                const descBox = this.querySelector(".description-box");
+                if (descBox) {
+                    const isVisible = window.getComputedStyle(descBox).display !== "none";
+                    descBox.style.display = isVisible ? "none" : "block";
+                }
+            });
+        });
+
+    });
+</script>
+
+</body>
+</html>

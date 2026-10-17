@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | Tech &amp; Gaming Store</title>
+    <!-- Basic CSS stylesheet -->
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav class="navbar">
+    <a th:href="@{/}" class="brand">Tech &amp; Gaming Store</a>
+    <ul class="nav-links">
+        <li><a th:href="@{/}" class="active">Home</a></li>
+        <li><a th:href="@{/products}">Products</a></li>
+    </ul>
+</nav>
+
+<div class="container">
+
+    <!-- Hero Banner: Store Welcome -->
+    <section class="hero-banner">
+        <h1>Tech &amp; Gaming Store</h1>
+        <p>
+            Welcome to our store! We sell computer parts, PlayStation consoles, laptops, smartphones, 
+            accessories, and popular video games with warranty and good prices.
+        </p>
+        <div>
+            <a th:href="@{/products}" class="btn">View All Products</a>
+        </div>
+    </section>
+
+    <!-- Main Categories -->
+    <h2 class="section-title">Our Products</h2>
+    <section class="department-grid">
+
+        <article class="department-card">
+            <span class="department-tag">Hardware</span>
+            <h3>PC Components</h3>
+            <p>Processors (CPU), graphics cards (GPU), RAM memory, and SSD storage for your computer.</p>
+        </article>
+
+        <article class="department-card">
+            <span class="department-tag">Consoles</span>
+            <h3>PlayStation 4 &amp; 5</h3>
+            <p>PlayStation 4 and PlayStation 5 consoles, original wireless controllers, and accessories.</p>
+        </article>
+
+        <article class="department-card">
+            <span class="department-tag">Games</span>
+            <h3>Popular Video Games</h3>
+            <p>Popular games like The Last of Us Part I &amp; II, GTA V, and new video game releases.</p>
+        </article>
+
+        <article class="department-card">
+            <span class="department-tag">Computers</span>
+            <h3>Office &amp; Gaming Laptops</h3>
+            <p>Laptops for study and office work, and powerful laptops for playing video games.</p>
+        </article>
+
+        <article class="department-card">
+            <span class="department-tag">Phones</span>
+            <h3>Smartphones</h3>
+            <p>Smartphones for daily use, social media, good cameras, and fast gaming phones.</p>
+        </article>
+
+        <article class="department-card">
+            <span class="department-tag">Gear</span>
+            <h3>Peripherals</h3>
+            <p>Keyboards, mice, headsets, and webcams for your computer or gaming setup.</p>
+        </article>
+
+    </section>
+
+    <!-- Why Choose Us -->
+    <h2 class="section-title">Why Buy From Us?</h2>
+    <section class="features-grid">
+
+        <div class="feature-box">
+            <h4>Official Warranty</h4>
+            <p>All items are 100% original and brand new with official warranty.</p>
+        </div>
+
+        <div class="feature-box">
+            <h4>Live Stock</h4>
+            <p>Check available stock and prices in real time in our product catalog.</p>
+        </div>
+
+        <div class="feature-box">
+            <h4>Customer Support</h4>
+            <p>We help you choose the best components and products for your needs.</p>
+        </div>
+
+    </section>
+
+</div>
+
+<!-- Footer -->
+<footer>
+    <p>&copy; 2026 Tech &amp; Gaming Store. PC Parts, PlayStation,&amp; Video Games.</p>
+</footer>
+
+</body>
+</html>
