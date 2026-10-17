@@ -35,4 +35,9 @@ public class HomeController {
     public String catalog() {
         return "redirect:/products";
     }
+
+    @GetMapping("/products-1")
+    public String productsOne() {
+        return "products-one";
+    }
 }

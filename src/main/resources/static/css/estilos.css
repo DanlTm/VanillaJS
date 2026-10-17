@@ -270,6 +270,14 @@ body {
     margin-top: 8px;
 }
 
+/* Descripción del producto directamente visible en la tarjeta */
+.product-description {
+    font-size: 12px;
+    color: #64748b;
+    margin: 6px 0 10px 0;
+    line-height: 1.4;
+}
+
 .price-stock-row {
     display: flex;
     justify-content: space-between;
@@ -306,11 +314,6 @@ body {
     display: block;
     color: #1d4ed8;
     margin-bottom: 2px;
-}
-
-/* Efecto hover en desktop */
-.product-card:hover .description-box {
-    display: block;
 }
 
 @keyframes fadeInDesc {
@@ -492,3 +495,81 @@ footer {
         grid-template-columns: 1fr;
     }
 }
+
+/* ---------------------------------------------------------
+   10. PÁGINA PRODUCTS 1 (COLECCIONABLES RICK & MORTY API)
+   --------------------------------------------------------- */
+.card-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    background-color: #e2e8f0;
+}
+
+.countdown-box {
+    margin-bottom: 14px;
+    font-size: 13px;
+    color: #b45309;
+    background-color: #fef3c7;
+    border: 1px solid #fde68a;
+    padding: 8px 12px;
+    border-radius: 4px;
+    display: none;
+    font-weight: 500;
+}
+
+.status-badge-alive {
+    background-color: #dcfce7;
+    color: #15803d;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 2px 7px;
+    border-radius: 10px;
+}
+
+.status-badge-dead {
+    background-color: #fee2e2;
+    color: #b91c1c;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 2px 7px;
+    border-radius: 10px;
+}
+
+.status-badge-unknown {
+    background-color: #f1f5f9;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 2px 7px;
+    border-radius: 10px;
+}
+
+.btn-back {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 6px 14px;
+    font-size: 12px;
+    background-color: #2563eb;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.btn-back:hover {
+    background-color: #1d4ed8;
+    transform: translateY(-1px);
+}
+
+.loading-spinner-box {
+    text-align: center;
+    padding: 40px;
+    font-size: 15px;
+    color: #64748b;
+}
+

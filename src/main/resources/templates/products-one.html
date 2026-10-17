@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products 1 (Rick &amp; Morty API) | Tech &amp; Gaming Store</title>
+
+    <!-- 1. TAILWIND CSS (Via CDN for modern utility styling on product cards) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- 2. Basic CSS Stylesheet (Grid, Flexbox, Media Query, Navbar) -->
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav class="navbar">
+    <a th:href="@{/}" class="brand">Tech &amp; Gaming Store</a>
+    <ul class="nav-links">
+        <li><a th:href="@{/}">Home</a></li>
+        <li><a th:href="@{/products}">Products</a></li>
+        <li><a th:href="@{/products-1}" class="active">Products 1</a></li>
+    </ul>
+</nav>
+
+<div class="container">
+
+    <!-- ========================================================
+         1. PAGE HEADER (Rick & Morty Collectibles Department)
+         ======================================================== -->
+    <header class="page-header">
+        <h1>Products 1: Rick &amp; Morty Official Collectibles</h1>
+        <p>Live REST API integration consuming 3 Endpoints (/character, /location, /episode) with a 4-second search delay.</p>
+    </header>
+
+    <!-- ========================================================
+         2. LIVE SEARCH BAR (CSS FLEXBOX - 4 SECONDS DELAY)
+         ======================================================== -->
+    <section class="search-container">
+        <!-- Search input with 4-second delay -->
+        <input type="text"
+               id="api-search-input"
+               class="form-control search-input"
+               placeholder="Search collectible by character name (triggers after 4 seconds of typing)..."
+               autofocus>
+
+        <!-- Status filter (Endpoint 1 query parameter) -->
+        <select id="api-status-filter" class="category-select">
+            <option value="">All Statuses</option>
+            <option value="alive">Alive (In Stock)</option>
+            <option value="dead">Dead (Special Edition)</option>
+            <option value="unknown">Unknown (Pre-order)</option>
+        </select>
+
+        <!-- Reset button -->
+        <button type="button" id="btn-api-reset" class="btn btn-secondary">Reset</button>
+    </section>
+
+    <!-- Visual countdown box for the 4-second delay -->
+    <div id="countdown-box" class="countdown-box">
+        Search delay active: searching in <strong id="countdown-seconds">4</strong> second(s)...
+    </div>
+
+    <!-- Product counter -->
+    <div class="results-counter">
+        Showing <strong id="api-visible-count">0</strong> collectible figure(s)
+    </div>
+
+    <!-- Loading spinner box -->
+    <div id="loading-box" class="loading-spinner-box">
+        <p>Loading figures from Rick and Morty API...</p>
+    </div>
+
+    <!-- ========================================================
+         3. PRODUCTS GRID (CSS GRID)
+         ======================================================== -->
+    <main id="api-products-container" class="products-grid" style="display: none;">
+        <!-- Dynamic cards injected via JavaScript from the API -->
+    </main>
+
+    <!-- No results message -->
+    <div id="api-no-results" class="no-results-box" style="display: none;">
+        <h3>No collectible figures found</h3>
+        <p>Try typing another character name or select All Statuses.</p>
+    </div>
+
+</div>
+
+<!-- Footer -->
+<footer>
+    <p>&copy; 2026 Tech &amp; Gaming Store. Official Rick &amp; Morty Store Merchandise.</p>
+</footer>
+
+<!-- ========================================================
+     4. JAVASCRIPT: 3 API ENDPOINTS & 4-SECOND DELAY
+     ======================================================== -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        // --- DOM Elements ---
+        const searchInput = document.getElementById("api-search-input");
+        const statusFilter = document.getElementById("api-status-filter");
+        const btnReset = document.getElementById("btn-api-reset");
+        const countdownBox = document.getElementById("countdown-box");
+        const countdownSeconds = document.getElementById("countdown-seconds");
+        const visibleCount = document.getElementById("api-visible-count");
+        const productsContainer = document.getElementById("api-products-container");
+        const loadingBox = document.getElementById("loading-box");
+        const noResults = document.getElementById("api-no-results");
+
+        // --- Timers for the 4-second delay ---
+        let searchTimeout = null;
+        let countdownInterval = null;
+        const DELAY_MILLISECONDS = 4000; // 4 seconds
+        let remainingSeconds = 4;
+
+        // --- Cache for Endpoints 2 and 3 to ensure speed ---
+        const locationCache = {};
+        const episodeCache = {};
+
+        // --- Initial Load: Endpoint 1 (/character) ---
+        fetchCharacters("", "");
+
+        // ========================================================
+        // 4-SECOND FIXED DELAY SEARCH LOGIC (THROTTLE)
+        // Starts on the first keystroke and runs for exactly 4 seconds
+        // without resetting if more characters are typed.
+        // ========================================================
+        searchInput.addEventListener("input", function () {
+            const query = searchInput.value.trim();
+
+            // If user cleared the input completely, reset and search all
+            if (query === "") {
+                clearTimeout(searchTimeout);
+                clearInterval(countdownInterval);
+                searchTimeout = null;
+                countdownInterval = null;
+                countdownBox.style.display = "none";
+                fetchCharacters("", statusFilter.value);
+                return;
+            }
+
+            // If the 4-second timer is ALREADY RUNNING, let it continue (do not reset!)
+            if (searchTimeout !== null) {
+                return;
+            }
+
+            // Start the strict 4-second countdown
+            remainingSeconds = 4;
+            countdownSeconds.textContent = remainingSeconds;
+            countdownBox.style.display = "block";
+
+            countdownInterval = setInterval(function () {
+                remainingSeconds--;
+                if (remainingSeconds > 0) {
+                    countdownSeconds.textContent = remainingSeconds;
+                } else {
+                    clearInterval(countdownInterval);
+                    countdownInterval = null;
+                }
+            }, 1000);
+
+            // Trigger search at exactly 4 seconds (4000ms)
+            searchTimeout = setTimeout(function () {
+                countdownBox.style.display = "none";
+                searchTimeout = null;
+                // Read whatever text is currently in the search input
+                const currentQuery = searchInput.value.trim();
+                const selectedStatus = statusFilter.value;
+                fetchCharacters(currentQuery, selectedStatus);
+            }, DELAY_MILLISECONDS);
+        });
+
+        // Dropdown status filter (immediate response)
+        statusFilter.addEventListener("change", function () {
+            clearTimeout(searchTimeout);
+            clearInterval(countdownInterval);
+            searchTimeout = null;
+            countdownInterval = null;
+            countdownBox.style.display = "none";
+            fetchCharacters(searchInput.value.trim(), statusFilter.value);
+        });
+
+        // Reset button
+        btnReset.addEventListener("click", function () {
+            clearTimeout(searchTimeout);
+            clearInterval(countdownInterval);
+            searchTimeout = null;
+            countdownInterval = null;
+            countdownBox.style.display = "none";
+            searchInput.value = "";
+            statusFilter.value = "";
+            fetchCharacters("", "");
+            searchInput.focus();
+        });
+
+        // ========================================================
+        // ENDPOINT 1: /character (Fetch characters from API)
+        // ========================================================
+        function fetchCharacters(nameQuery, statusQuery) {
+            loadingBox.style.display = "block";
+            productsContainer.style.display = "none";
+            noResults.style.display = "none";
+
+            let apiUrl = "https://rickandmortyapi.com/api/character/?";
+            if (nameQuery) apiUrl += "name=" + encodeURIComponent(nameQuery) + "&";
+            if (statusQuery) apiUrl += "status=" + encodeURIComponent(statusQuery);
+
+            fetch(apiUrl)
+                .then(function (response) {
+                    if (!response.ok) throw new Error("No figures found");
+                    return response.json();
+                })
+                .then(function (data) {
+                    loadingBox.style.display = "none";
+                    renderCards(data.results);
+                })
+                .catch(function () {
+                    loadingBox.style.display = "none";
+                    productsContainer.style.display = "none";
+                    productsContainer.innerHTML = "";
+                    visibleCount.textContent = "0";
+                    noResults.style.display = "block";
+                });
+        }
+
+        // ========================================================
+        // RENDER PRODUCT CARDS (Tailwind CSS utilities + CSS Grid)
+        // ========================================================
+        function renderCards(characters) {
+            productsContainer.innerHTML = "";
+            visibleCount.textContent = characters.length;
+
+            if (characters.length === 0) {
+                noResults.style.display = "block";
+                return;
+            }
+
+            noResults.style.display = "none";
+            productsContainer.style.display = "grid";
+
+            characters.forEach(function (char) {
+                // Status badge
+                let statusBadge = "status-badge-unknown";
+                let statusText = "Pre-order";
+                if (char.status.toLowerCase() === "alive") {
+                    statusBadge = "status-badge-alive";
+                    statusText = "In Stock";
+                } else if (char.status.toLowerCase() === "dead") {
+                    statusBadge = "status-badge-dead";
+                    statusText = "Vault Edition";
+                }
+
+                // Simulated price and stock
+                const price = (24.99 + (char.id % 25)).toFixed(2);
+                const stock = (char.id % 15) + 3;
+
+                // Create Card element
+                const card = document.createElement("article");
+                card.className = "product-card bg-white rounded-xl shadow-sm border border-slate-200 p-4 flex flex-col justify-between hover:shadow-md transition-shadow cursor-pointer";
+                card.setAttribute("data-id", char.id);
+
+                card.innerHTML = `
+                    <div>
+                        <!-- Product Photo (Official API Image) -->
+                        <img src="${char.image}" alt="${char.name}" class="card-img" loading="lazy">
+
+                        <!-- Header Info: ID and Status Badge -->
+                        <div class="card-header-info">
+                            <span class="product-id">#FIG-${char.id}</span>
+                            <span class="${statusBadge}">${statusText}</span>
+                        </div>
+
+                        <!-- Product Title and Line -->
+                        <h2 class="product-title">${char.name} - Collectible Figure</h2>
+                        <span class="category-badge mb-2 inline-block">${char.species} Line</span>
+                    </div>
+
+                    <!-- Footer Info: Price, Stock, Description Box -->
+                    <div class="card-footer-info">
+                        <div class="price-stock-row">
+                            <span class="product-price">$${price}</span>
+                            <span class="product-stock">Stock: ${stock} units</span>
+                        </div>
+
+                        <!-- Description Box (Opens ONLY on click, never on hover) -->
+                        <div class="description-box" id="desc-${char.id}" style="display: none;">
+                            <strong>Product Specifications:</strong>
+                            <p class="mb-1 text-xs text-gray-700">
+                                <strong>Material:</strong> Premium PVC (1:10 Scale Collector Figure)
+                            </p>
+
+                            <!-- Endpoint 2: Origin Location & Manufacturing Hub -->
+                            <p class="mb-1 text-xs text-gray-600 origin-info">
+                                <strong>Origin Hub (Endpoint 2):</strong> <span>Loading location...</span>
+                            </p>
+
+                            <!-- Endpoint 3: First Episode / Authenticity Certificate -->
+                            <p class="mb-2 text-xs text-gray-600 episode-info">
+                                <strong>Authenticity Cert (Endpoint 3):</strong> <span>Loading certificate...</span>
+                            </p>
+
+                            <!-- Button Volver to close description -->
+                            <div>
+                                <button type="button" class="btn-back">← Volver</button>
+                            </div>
+                        </div>
+
+                        <small class="card-hint">Click card to view details</small>
+                    </div>
+                `;
+
+                // ========================================================
+                // CLICK HANDLER: ONLY OPENS DESCRIPTION (NO CLOSING BY CARD CLICK)
+                // The user is OBLIGATED to use the 'Volver' button to close.
+                // ========================================================
+                card.addEventListener("click", function (e) {
+                    // If click was on button 'Volver', ignore here
+                    if (e.target.classList.contains("btn-back")) return;
+
+                    const descBox = card.querySelector(".description-box");
+                    const cardHint = card.querySelector(".card-hint");
+                    const isVisible = window.getComputedStyle(descBox).display !== "none";
+
+                    // ONLY open if not already open. Clicking on the card DOES NOT close it!
+                    if (!isVisible) {
+                        descBox.style.display = "block";
+                        if (cardHint) cardHint.style.display = "none";
+                        loadDetails(char, descBox);
+                    }
+                });
+
+                // Button 'Volver': THE EXCLUSIVE WAY TO CLOSE THE DESCRIPTION
+                const btnBack = card.querySelector(".btn-back");
+                btnBack.addEventListener("click", function (e) {
+                    e.stopPropagation(); // Stop card click from triggering
+                    const descBox = card.querySelector(".description-box");
+                    const cardHint = card.querySelector(".card-hint");
+                    descBox.style.display = "none";
+                    if (cardHint) cardHint.style.display = "block";
+                });
+
+                productsContainer.appendChild(card);
+            });
+        }
+
+        // ========================================================
+        // ENDPOINT 2 (/location) & ENDPOINT 3 (/episode) FETCH
+        // ========================================================
+        function loadDetails(char, descBox) {
+            const originSpan = descBox.querySelector(".origin-info span");
+            const episodeSpan = descBox.querySelector(".episode-info span");
+
+            // --- ENDPOINT 2: Location / Origin Hub ---
+            if (char.origin && char.origin.url) {
+                if (locationCache[char.origin.url]) {
+                    originSpan.textContent = locationCache[char.origin.url];
+                } else {
+                    fetch(char.origin.url)
+                        .then(res => res.json())
+                        .then(loc => {
+                            const info = `${loc.name} (${loc.type || 'Dimension'})`;
+                            locationCache[char.origin.url] = info;
+                            originSpan.textContent = info;
+                        })
+                        .catch(() => {
+                            originSpan.textContent = char.origin.name || "Earth Hub";
+                        });
+                }
+            } else {
+                originSpan.textContent = char.origin ? char.origin.name : "Earth Hub";
+            }
+
+            // --- ENDPOINT 3: Episode / Authenticity Certificate ---
+            if (char.episode && char.episode.length > 0) {
+                const firstEpisodeUrl = char.episode[0];
+                if (episodeCache[firstEpisodeUrl]) {
+                    episodeSpan.textContent = episodeCache[firstEpisodeUrl];
+                } else {
+                    fetch(firstEpisodeUrl)
+                        .then(res => res.json())
+                        .then(ep => {
+                            const info = `${ep.episode} - "${ep.name}" (Debut: ${ep.air_date})`;
+                            episodeCache[firstEpisodeUrl] = info;
+                            episodeSpan.textContent = info;
+                        })
+                        .catch(() => {
+                            episodeSpan.textContent = "Official Universe Authenticity Certified";
+                        });
+                }
+            } else {
+                episodeSpan.textContent = "Official Universe Authenticity Certified";
+            }
+        }
+
+    });
+</script>
+
+</body>
+</html>

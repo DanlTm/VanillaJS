@@ -18,6 +18,7 @@
     <ul class="nav-links">
         <li><a th:href="@{/}">Home</a></li>
         <li><a th:href="@{/products}" class="active">Products</a></li>
+        <li><a th:href="@{/products-1}">Products 1</a></li>
     </ul>
 </nav>
 
@@ -76,7 +77,7 @@
                           data-category=${p.category != null ? p.category.name : 'General'},
                           data-description=${p.description != null ? p.description : 'High-quality product with official warranty.'}">
 
-            <!-- Card Header: ID and Category -->
+            <!-- Card Header: ID, Category, Name & Visible Description -->
             <div>
                 <div class="card-header-info">
                     <span class="product-id" th:text="'#' + ${p.id}">#1</span>
@@ -85,24 +86,19 @@
 
                 <!-- Product Name -->
                 <h2 class="product-title" th:text="${p.name}">Product Name</h2>
+
+                <!-- Short Product Description (Directly visible) -->
+                <p class="product-description" th:text="${p.description != null ? p.description : 'High-quality item available in store inventory with official warranty.'}">
+                    Product technical description.
+                </p>
             </div>
 
-            <!-- Card Footer: Price, Stock, and Description -->
+            <!-- Card Footer: Price and Stock -->
             <div class="card-footer-info">
                 <div class="price-stock-row">
                     <span class="product-price" th:text="'$' + ${p.price}">$0.00</span>
                     <span class="product-stock" th:text="'Stock: ' + ${p.stock} + ' units'">Stock: 10 units</span>
                 </div>
-
-                <!-- Description Box (Shown on hover in PC or tap on mobile) -->
-                <div class="description-box">
-                    <strong>Description:</strong>
-                    <span th:text="${p.description != null ? p.description : 'High-quality product with official warranty.'}">
-                        Product description.
-                    </span>
-                </div>
-
-                <small class="card-hint">Hover or tap to see description</small>
             </div>
 
         </article>
@@ -123,7 +119,7 @@
 </footer>
 
 <!-- ========================================================
-     5. INSTANT LIVE SEARCH (VANILLA JAVASCRIPT)
+     5. INSTANT LIVE SEARCH (VANILLA JAVASCRIPT - 0ms)
      ======================================================== -->
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -183,17 +179,6 @@
         function updateCounter() {
             visibleCount.textContent = productCards.length;
         }
-
-        // Tap toggle for Android / mobile phones
-        productCards.forEach(function (card) {
-            card.addEventListener("click", function () {
-                const descBox = this.querySelector(".description-box");
-                if (descBox) {
-                    const isVisible = window.getComputedStyle(descBox).display !== "none";
-                    descBox.style.display = isVisible ? "none" : "block";
-                }
-            });
-        });
 
     });
 </script>

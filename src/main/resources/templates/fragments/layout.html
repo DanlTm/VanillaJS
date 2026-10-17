@@ -17,6 +17,7 @@
     <ul class="nav-links">
         <li><a th:href="@{/}" th:classappend="${active == 'home'} ? 'active'">Home</a></li>
         <li><a th:href="@{/products}" th:classappend="${active == 'products'} ? 'active'">Products</a></li>
+        <li><a th:href="@{/products-1}" th:classappend="${active == 'products-1'} ? 'active'">Products 1</a></li>
     </ul>
 </nav>
 
@@ -28,7 +29,7 @@
 
 <!-- Footer Fragment -->
 <footer th:fragment="footer">
-    <p>&copy; 2026 Tech &amp; Gaming Store. PC Components, PlayStation,amp; Video Games.</p>
+    <p>&copy; 2026 Tech &amp; Gaming Store. PC Components, PlayStation &amp; Video Games.</p>
 </footer>
 
 </body>
