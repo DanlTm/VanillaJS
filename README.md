@@ -1,4 +1,4 @@
-# Tech and Gaming Store
+# Vanilla JS Project
 
 This is a web app for a tech product store.
 
