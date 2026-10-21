@@ -1,0 +1,158 @@
+/* Universal reset: includes padding and border in element dimensions */
+* {
+    box-sizing: border-box;
+}
+
+/* Page body: font family, margins, background, and default text color */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8fafc;
+    color: #1e293b;
+    line-height: 1.5;
+}
+
+/* Feedback boxes: countdown, results counter, loading, and no results */
+.countdown-box {
+    display: none;
+    background-color: #fef3c7;
+    border-left: 4px solid #f59e0b;
+    padding: 8px 12px;
+    margin-bottom: 12px;
+    font-size: 13px;
+    color: #92400e;
+}
+.results-counter {
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 15px;
+}
+.loading-spinner-box,
+.no-results-box {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 30px;
+    text-align: center;
+}
+
+/* Product card: container for individual product info */
+.product-card {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+}
+.product-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+.card-img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+.card-header-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+.product-id {
+    font-size: 11px;
+    color: #94a3b8;
+    font-family: monospace;
+}
+.product-title {
+    margin: 0 0 6px 0;
+    font-size: 16px;
+    color: #0f172a;
+}
+
+/* Badges: category and status tags */
+.category-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    background-color: #e0e7ff;
+    color: #3730a3;
+    font-size: 11px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+.status-badge-alive {
+    background-color: #dcfce7;
+    color: #166534;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: bold;
+}
+.status-badge-dead {
+    background-color: #fee2e2;
+    color: #991b1b;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: bold;
+}
+.status-badge-unknown {
+    background-color: #f1f5f9;
+    color: #475569;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+/* Card details: price, stock, expandable description, and tap hint */
+.price-stock-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: 12px;
+}
+.product-price {
+    font-size: 18px;
+    font-weight: bold;
+    color: #0f172a;
+}
+.product-stock {
+    font-size: 12px;
+    color: #64748b;
+}
+.description-box {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 13px;
+}
+.description-box p {
+    margin: 4px 0;
+}
+.card-hint {
+    display: block;
+    margin-top: 8px;
+    font-size: 11px;
+    color: #94a3b8;
+    text-align: center;
+}
+
+/* Footer: bottom copyright bar */
+footer {
+    border-top: 1px solid #e2e8f0;
+    margin-top: 40px;
+    padding: 20px;
+    text-align: center;
+    font-size: 12px;
+    color: #94a3b8;
+}
