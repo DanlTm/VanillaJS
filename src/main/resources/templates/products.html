@@ -2,72 +2,86 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Products | Tech &amp; Gaming Store</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Products</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
-
-<nav class="bg-slate-900 px-5 py-3">
-    <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 md:flex-row">
-        <a th:href="@{/products}" class="text-lg font-bold text-white no-underline">Tech &amp; Gaming Store</a>
-        <ul class="m-0 flex list-none gap-3 p-0">
-            <li><a th:href="@{/products}" class="rounded px-3 py-1.5 text-sm text-white no-underline hover:bg-slate-700">Page 1: Products</a></li>
-            <li><a th:href="@{/products-1}" class="rounded px-3 py-1.5 text-sm text-slate-300 no-underline hover:bg-slate-700">Page 2: REST API</a></li>
-        </ul>
-    </div>
-</nav>
-
-<div class="container mx-auto max-w-7xl px-4 py-6">
-    <header class="mb-5 border-b border-slate-200 pb-3">
-        <h1 class="mb-1 text-2xl font-bold text-slate-900">Products</h1>
-        <p class="m-0 text-sm text-slate-500">Find computer parts, consoles, laptops, phones, and video games.</p>
-    </header>
-
-    <section class="mb-4 flex flex-col gap-3 md:flex-row">
-        <input type="text" id="live-search-input" class="search-input w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200" placeholder="Search products by name or description..." autofocus>
-        <button type="button" id="btn-reset" class="whitespace-nowrap rounded-md bg-slate-500 px-4 py-2 text-sm text-white hover:bg-slate-600">Reset</button>
-    </section>
-
-    <div class="results-counter mb-4 text-sm text-slate-500">
-        Showing <strong id="visible-count">0</strong> product(s)
-    </div>
-
-    <main id="products-container" class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        <article th:each="p : ${products}"
-                 class="product-card"
-                 th:attr="data-id=${p.id},
-                          data-name=${p.name},
-                          data-price=${p.price},
-                          data-stock=${p.stock},
-                          data-description=${p.description != null ? p.description : ''}">
-            <div>
-                <div class="card-header-info">
-                    <span class="product-id" th:text="'#' + ${p.id}">#1</span>
-                </div>
-                <h2 class="product-title" th:text="${p.name}">Product Name</h2>
-                <p class="product-description" th:text="${p.description != null ? p.description : 'High-quality item with warranty.'}"></p>
+    <nav class="bg-slate-900 px-5 py-3">
+        <div class="mx-auto flex max-w-7xl items-center justify-between">
+            <a th:href="@{/products}" class="text-lg font-bold text-white no-underline">
+                Vanilla JS Project
+            </a>
+            <div class="flex gap-3">
+                <a th:href="@{/products}"
+                   class="rounded bg-slate-700 px-3 py-2 text-sm text-white no-underline">
+                    Products
+                </a>
+                <a th:href="@{/products-1}"
+                   class="rounded px-3 py-2 text-sm text-slate-300 no-underline hover:bg-slate-700">
+                    API Page
+                </a>
             </div>
-            <div class="card-footer-info">
+        </div>
+    </nav>
+
+    <main class="container mx-auto max-w-7xl px-4 py-6">
+        <header class="mb-5 border-b border-slate-200 pb-3">
+            <h1 class="mb-1 text-2xl font-bold text-slate-900">Products</h1>
+            <p class="m-0 text-sm text-slate-500">Search local products.</p>
+        </header>
+
+        <section class="mb-4 flex flex-col gap-3 md:flex-row">
+            <input id="live-search-input"
+                   class="search-input w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                   type="search"
+                   placeholder="Search by name or description"
+                   autofocus>
+            <button id="btn-reset" type="button"
+                    class="rounded-md bg-slate-500 px-4 py-2 text-sm text-white">
+                Reset
+            </button>
+        </section>
+
+        <p class="results-counter mb-4 text-sm text-slate-500">
+            Showing <strong id="visible-count">0</strong> product(s)
+        </p>
+
+        <section id="products-container" class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            <article th:each="p : ${products}"
+                     class="product-card"
+                     th:attr="data-id=${p.id},
+                              data-name=${p.name},
+                              data-price=${p.price},
+                              data-stock=${p.stock},
+                              data-description=${p.description != null ? p.description : ''}">
+                <div>
+                    <span class="product-id" th:text="'#' + ${p.id}">#1</span>
+                    <h2 class="product-title" th:text="${p.name}">Product</h2>
+                    <p class="product-description"
+                       th:text="${p.description != null ? p.description : 'Product description'}">
+                        Product description
+                    </p>
+                </div>
                 <div class="price-stock-row">
                     <span class="product-price" th:text="'$' + ${p.price}">$0.00</span>
-                    <span class="product-stock" th:text="'Stock: ' + ${p.stock} + ' units'">Stock: 10 units</span>
+                    <span class="product-stock"
+                          th:text="'Stock: ' + ${p.stock}">Stock: 0</span>
                 </div>
-            </div>
-        </article>
+            </article>
+        </section>
+
+        <section id="no-results" class="no-results-box" style="display: none;">
+            <h2>No products found</h2>
+            <p>Try another search.</p>
+        </section>
     </main>
 
-    <div id="no-results" class="no-results-box" style="display: none;">
-        <h3>No products found</h3>
-        <p>Try typing a different product name.</p>
-    </div>
-</div>
+    <footer>
+        <p>Vanilla JS Project</p>
+    </footer>
 
-<footer>
-    <p>&copy; 2026 Tech &amp; Gaming Store. PC Parts, PlayStation, Laptops, Phones &amp; Video Games.</p>
-</footer>
-
-<script th:src="@{/js/products.js}"></script>
+    <script th:src="@{/js/products.js}"></script>
 </body>
 </html>
