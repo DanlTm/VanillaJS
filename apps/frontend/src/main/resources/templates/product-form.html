@@ -22,6 +22,7 @@
             <p class="page-subtitle">Complete the fields and save the product.</p>
         </header>
 
+        <!-- This form shows and updates product data. -->
         <form th:action="${product.id == null} ? @{/products} : @{/products/{id}(id=${product.id})}"
               th:object="${product}" method="post"
               class="form-card">

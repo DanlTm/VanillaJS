@@ -28,6 +28,7 @@ public class ProductService {
                 .orElseThrow(() -> new NoSuchElementException("Product not found: " + id));
     }
 
+    // Updates the product data in the database.
     public Product update(Long id, Product product) {
         Product existing = findById(id);
         existing.setName(product.getName());
