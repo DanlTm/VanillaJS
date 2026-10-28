@@ -4,47 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Products</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" th:href="@{/css/styles.css(v=4)}">
 </head>
 <body>
-    <nav class="bg-slate-900 px-5 py-3">
-        <div class="mx-auto flex max-w-7xl items-center justify-between">
-            <a th:href="@{/products}" class="text-lg font-bold text-white no-underline">
+    <nav class="site-nav">
+        <div class="nav-content">
+            <a th:href="@{/products}" class="site-logo">
                 Vanilla JS Project
             </a>
-            <div class="flex gap-3">
-                <a th:href="@{/products}"
-                   class="rounded bg-slate-700 px-3 py-2 text-sm text-white no-underline">
-                    Products
-                </a>
-                <a th:href="@{/products-1}"
-                   class="rounded px-3 py-2 text-sm text-slate-300 no-underline hover:bg-slate-700">
-                    API Page
-                </a>
+            <div class="nav-links">
+                <a th:href="@{/products}" class="nav-link nav-link-active">Products</a>
+                <a th:href="@{/products-1}" class="nav-link">API Page</a>
             </div>
         </div>
     </nav>
 
-    <main class="container mx-auto max-w-7xl px-4 py-6">
-        <header class="mb-5 border-b border-slate-200 pb-3">
-            <h1 class="mb-1 text-2xl font-bold text-slate-900">Products</h1>
-            <p class="m-0 text-sm text-slate-500">Search local products.</p>
+    <main class="page-container">
+        <header class="page-header">
+            <h1 class="page-title">Products</h1>
+            <p class="page-subtitle">Search local products.</p>
         </header>
 
-        <section class="mb-4 flex flex-col gap-3 md:flex-row">
+        <section class="products-toolbar">
             <input id="live-search-input"
-                   class="search-input w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                   class="search-input"
                    type="search"
                    placeholder="Search by name or description"
                    autofocus>
             <button id="btn-reset" type="button"
-                    class="rounded-md bg-slate-500 px-4 py-2 text-sm text-white">
+                    class="secondary-button toolbar-button">
                 Reset
             </button>
+            <a th:href="@{/products/new}" class="primary-button toolbar-button">Add product</a>
         </section>
 
-        <p class="results-counter mb-4 text-sm text-slate-500">
+        <p class="results-counter">
             Showing <strong id="visible-count">0</strong> product(s)
         </p>
 
@@ -56,6 +50,7 @@
                               data-price=${p.price},
                               data-stock=${p.stock},
                               data-description=${p.description != null ? p.description : ''}">
+                <span class="product-action-hint">Click the product to show actions</span>
                 <div>
                     <span class="product-id" th:text="'#' + ${p.id}">#1</span>
                     <h2 class="product-title" th:text="${p.name}">Product</h2>
@@ -68,6 +63,13 @@
                     <span class="product-price" th:text="'$' + ${p.price}">$0.00</span>
                     <span class="product-stock"
                           th:text="'Stock: ' + ${p.stock}">Stock: 0</span>
+                </div>
+                <div class="product-actions" aria-label="Product actions">
+                    <!-- This link opens the edit form. -->
+                    <a th:href="@{/products/{id}/edit(id=${p.id})}" class="action-edit">Edit</a>
+                    <form th:action="@{/products/{id}/delete(id=${p.id})}" method="post">
+                        <button type="submit" class="action-delete">Delete</button>
+                    </form>
                 </div>
             </article>
         </section>
@@ -82,6 +84,6 @@
         <p>Vanilla JS Project</p>
     </footer>
 
-    <script th:src="@{/js/products.js}"></script>
+    <script th:src="@{/js/products.js(v=2)}"></script>
 </body>
 </html>
