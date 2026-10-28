@@ -53,6 +53,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}/edit")
+    // Opens the form with the product data.
     public String editProduct(@PathVariable Long id, Model model) {
         model.addAttribute("product", productService.findById(id));
         return "product-form";
@@ -71,6 +72,7 @@ public class ProductController {
     }
 
     @PostMapping("/{id}")
+    // Saves the new product data.
     public String updateProduct(
             @PathVariable Long id,
             @Valid @ModelAttribute("product") Product product,

@@ -65,6 +65,7 @@
                           th:text="'Stock: ' + ${p.stock}">Stock: 0</span>
                 </div>
                 <div class="product-actions" aria-label="Product actions">
+                    <!-- This link opens the edit form. -->
                     <a th:href="@{/products/{id}/edit(id=${p.id})}" class="action-edit">Edit</a>
                     <form th:action="@{/products/{id}/delete(id=${p.id})}" method="post">
                         <button type="submit" class="action-delete">Delete</button>
