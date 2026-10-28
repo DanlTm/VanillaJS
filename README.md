@@ -249,3 +249,28 @@ Database: inventory_db
 
 The database username and password are read from environment variables. This
 keeps private database information outside the source code.
+
+## Docker deployment
+
+The project includes a multi-stage [Dockerfile](./Dockerfile) and a
+[docker-compose.yml](./docker-compose.yml) for running the Spring Boot
+application with MySQL. The Docker image builds the backend with Java 21 and
+does not contain database credentials.
+
+To build the image locally:
+
+```powershell
+docker build -t your-dockerhub-user/inventory-app:1.0 .
+```
+
+After publishing the image to Docker Hub, copy [.env.example](./.env.example)
+to `.env`, replace `APP_IMAGE` with the published image, and set strong
+database passwords. Then start the application and database with:
+
+```bash
+docker compose up -d
+```
+
+The application is available at `http://localhost:8080/products` and
+`http://localhost:8080/products-1`. The MySQL data is persisted in the
+`mysql_data` Docker volume.
