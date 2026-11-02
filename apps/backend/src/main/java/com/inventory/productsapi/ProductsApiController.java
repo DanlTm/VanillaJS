@@ -1,4 +1,4 @@
-package com.inventory.controller;
+package com.inventory.productsapi;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping;
  * Controller for the page that consumes the external REST API.
  */
 @Controller
-public class ApiProductsController {
+public class ProductsApiController {
 
-    @GetMapping("/products-1")
+    @GetMapping("/products-api")
     public String productsFromApi() {
-        return "products-1";
+        return "products-api/list";
     }
 }
