@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Products</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css(v=4)}">
+</head>
+<body>
+    <nav class="site-nav">
+        <div class="nav-content">
+            <a th:href="@{/products}" class="site-logo">
+                Vanilla JS Project
+            </a>
+            <div class="nav-links">
+                <a th:href="@{/products}" class="nav-link nav-link-active">Products</a>
+                <a th:href="@{/products-api}" class="nav-link">API Page</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="page-container">
+        <header class="page-header">
+            <h1 class="page-title">Products</h1>
+            <p class="page-subtitle">Search local products.</p>
+        </header>
+
+        <section class="products-toolbar">
+            <input id="live-search-input"
+                   class="search-input"
+                   type="search"
+                   placeholder="Search by name or description"
+                   autofocus>
+            <button id="btn-reset" type="button"
+                    class="secondary-button toolbar-button">
+                Reset
+            </button>
+            <a th:href="@{/products/new}" class="primary-button toolbar-button">Add product</a>
+        </section>
+
+        <p class="results-counter">
+            Showing <strong id="visible-count">0</strong> product(s)
+        </p>
+
+        <section id="products-container" class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            <article th:each="p : ${products}"
+                     class="product-card"
+                     th:attr="data-id=${p.id},
+                              data-name=${p.name},
+                              data-price=${p.price},
+                              data-stock=${p.stock},
+                              data-description=${p.description != null ? p.description : ''}">
+                <span class="product-action-hint">Click the product to show actions</span>
+                <div>
+                    <span class="product-id" th:text="'#' + ${p.id}">#1</span>
+                    <h2 class="product-title" th:text="${p.name}">Product</h2>
+                    <p class="product-description"
+                       th:text="${p.description != null ? p.description : 'Product description'}">
+                        Product description
+                    </p>
+                </div>
+                <div class="price-stock-row">
+                    <span class="product-price" th:text="'$' + ${p.price}">$0.00</span>
+                    <span class="product-stock"
+                          th:text="'Stock: ' + ${p.stock}">Stock: 0</span>
+                </div>
+                <div class="product-actions" aria-label="Product actions">
+                    <!-- This link opens the edit form. -->
+                    <a th:href="@{/products/{id}/edit(id=${p.id})}" class="action-edit">Edit</a>
+                    <form th:action="@{/products/{id}/delete(id=${p.id})}" method="post">
+                        <button type="submit" class="action-delete">Delete</button>
+                    </form>
+                </div>
+            </article>
+        </section>
+
+        <section id="no-results" class="no-results-box" style="display: none;">
+            <h2>No products found</h2>
+            <p>Try another search.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>Vanilla JS Project</p>
+    </footer>
+
+    <script th:src="@{/js/product/products.js(v=2)}"></script>
+</body>
+</html>

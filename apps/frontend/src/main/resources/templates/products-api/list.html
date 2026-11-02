@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>API Products</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <nav class="bg-slate-900 px-5 py-3">
+        <div class="mx-auto flex max-w-7xl items-center justify-between">
+            <a th:href="@{/products}" class="text-lg font-bold text-white no-underline">
+                Vanilla JS Project
+            </a>
+            <div class="flex gap-3">
+                <a th:href="@{/products}"
+                   class="rounded px-3 py-2 text-sm text-slate-300 no-underline hover:bg-slate-700">
+                    Products
+                </a>
+                <a th:href="@{/products-api}"
+                   class="rounded bg-slate-700 px-3 py-2 text-sm text-white no-underline">
+                    API Page
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto max-w-7xl px-4 py-6">
+        <header class="mb-5 border-b border-slate-200 pb-3">
+            <h1 class="mb-1 text-2xl font-bold text-slate-900">API Products</h1>
+            <p class="m-0 text-sm text-slate-500">Rick and Morty products.</p>
+        </header>
+
+        <section class="mb-4 flex flex-col gap-3 md:flex-row">
+            <input id="api-search-input"
+                   class="search-input w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                   type="search"
+                   placeholder="Search a character"
+                   autofocus>
+            <select id="api-status-filter"
+                    class="category-select rounded-md border border-slate-300 bg-white px-3 py-2 text-sm">
+                <option value="">All statuses</option>
+                <option value="alive">Alive</option>
+                <option value="dead">Dead</option>
+                <option value="unknown">Unknown</option>
+            </select>
+            <button id="btn-api-reset" type="button"
+                    class="rounded-md bg-slate-500 px-4 py-2 text-sm text-white">
+                Reset
+            </button>
+        </section>
+
+        <p id="countdown-box" class="countdown-box">
+            Searching in <strong id="countdown-seconds">4</strong> second(s).
+        </p>
+
+        <p class="results-counter mb-4 text-sm text-slate-500">
+            Showing <strong id="api-visible-count">0</strong> product(s)
+        </p>
+
+        <section id="loading-box" class="loading-spinner-box">
+            <p>Loading products...</p>
+        </section>
+
+        <section id="api-products-container"
+                 class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4"
+                 style="display: none;">
+        </section>
+
+        <section id="api-no-results" class="no-results-box" style="display: none;">
+            <h2>No products found</h2>
+            <p>Try another search.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>Vanilla JS Project</p>
+    </footer>
+
+    <script th:src="@{/js/products-api/products-api.js}"></script>
+</body>
+</html>
