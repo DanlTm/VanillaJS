@@ -182,35 +182,33 @@ kept in the same repository, but each application has its own responsibility.
 
 ```text
 BaseProyect/
-├── apps/
-│   ├── backend/
-│   │   ├── pom.xml
-│   │   └── src/
-│   │       ├── main/java/com/inventory/
-│       │       │   ├── home/
-│       │       │   ├── product/
-│       │       │   └── productsapi/
-│   │       ├── main/resources/
-│   │       │   └── application.properties
-│   │       └── test/
-│   └── frontend/
-│       ├── package.json
-│       └── src/main/resources/
-│           ├── static/
-│           │   ├── css/
-│           │   └── js/
-│           │       ├── product/
-│           │       └── products-api/
-│           └── templates/
-│               ├── product/
-│               │   ├── form.html
-│               │   └── list.html
-│               └── products-api/
-├── packages/
-│   └── api-contract/
-├── infra/
+├── backend/
+│   ├── pom.xml
+│   └── src/
+│       ├── main/java/com/inventory/
+│       │   ├── home/
+│       │   ├── product/
+│       │   └── productsapi/
+│       ├── main/resources/
+│       │   └── application.properties
+│       └── test/
+├── frontend/
+│   ├── package.json
+│   └── src/main/resources/
+│       ├── static/
+│       │   ├── css/
+│       │   └── js/
+│       │       ├── product/
+│       │       └── products-api/
+│       └── templates/
+│           ├── product/
+│           │   ├── form.html
+│           │   └── list.html
+│           └── products-api/
 ├── .github/
 │   └── workflows/
+├── Dockerfile
+├── docker-compose.yml
 ├── pom.xml
 ├── mvnw
 └── mvnw.cmd

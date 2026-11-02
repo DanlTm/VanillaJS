@@ -15,6 +15,6 @@
     <packaging>pom</packaging>
     <name>inventory-monorepo</name>
     <modules>
-        <module>apps/backend</module>
+        <module>backend</module>
     </modules>
 </project>
