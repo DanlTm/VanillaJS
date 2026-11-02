@@ -1,4 +1,4 @@
-package com.inventory.model;
+package com.inventory.product;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

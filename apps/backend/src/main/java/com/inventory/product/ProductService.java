@@ -1,7 +1,5 @@
-package com.inventory.service;
+package com.inventory.product;
 
-import com.inventory.model.Product;
-import com.inventory.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.NoSuchElementException;

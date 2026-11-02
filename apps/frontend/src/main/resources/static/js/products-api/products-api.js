@@ -85,16 +85,19 @@ document.addEventListener("DOMContentLoaded", function () {
         loadingBox.style.display = "block";
         container.style.display = "none";
         noResults.style.display = "none";
-
+   // key cache for name and status, check if there is any saved data before calling the API
         const key = `${name}::${status}`;
         if (cache[key]) {
             render(cache[key]);
             return;
         }
-
+    // Receives search parameters and returns matching characters(name/status)
         const url = new URL("https://rickandmortyapi.com/api/character");
         if (name) url.searchParams.set("name", name);
         if (status) url.searchParams.set("status", status);
+
+    //`fetch` makes an HTTP request to the `character` endpoint, and the result is converted to JSON.
+        // If the response contains an error, the promise is rejected
 
         fetch(url)
             .then(res => res.ok ? res.json() : Promise.reject())
