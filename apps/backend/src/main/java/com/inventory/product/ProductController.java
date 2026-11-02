@@ -1,7 +1,5 @@
-package com.inventory.controller;
+package com.inventory.product;
 
-import com.inventory.model.Product;
-import com.inventory.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -42,21 +40,21 @@ public class ProductController {
         // Send list of all products to the HTML view
         model.addAttribute("products", productService.findAll());
 
-        // Return the view name (src/main/resources/templates/products.html)
-        return "products";
+        // Return the view name (src/main/resources/templates/product/list.html)
+        return "product/list";
     }
 
     @GetMapping("/new")
     public String newProduct(Model model) {
         model.addAttribute("product", new Product());
-        return "product-form";
+        return "product/form";
     }
 
     @GetMapping("/{id}/edit")
     // Opens the form with the product data.
     public String editProduct(@PathVariable Long id, Model model) {
         model.addAttribute("product", productService.findById(id));
-        return "product-form";
+        return "product/form";
     }
 
     @PostMapping
@@ -64,7 +62,7 @@ public class ProductController {
             @Valid @ModelAttribute("product") Product product,
             BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "product-form";
+            return "product/form";
         }
 
         productService.save(product);
@@ -79,7 +77,7 @@ public class ProductController {
             BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             product.setId(id);
-            return "product-form";
+            return "product/form";
         }
 
         productService.update(id, product);

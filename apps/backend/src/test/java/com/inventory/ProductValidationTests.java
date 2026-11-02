@@ -2,7 +2,7 @@ package com.inventory;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.inventory.model.Product;
+import com.inventory.product.Product;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;

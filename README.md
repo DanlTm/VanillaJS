@@ -35,7 +35,7 @@ data to the Thymeleaf template.
 URL:
 
 ```text
-http://localhost:8080/products-1
+http://localhost:8080/products-api
 ```
 
 This page uses characters from the public Rick and Morty API. The characters
@@ -187,10 +187,9 @@ BaseProyect/
 │   │   ├── pom.xml
 │   │   └── src/
 │   │       ├── main/java/com/inventory/
-│   │       │   ├── controller/
-│   │       │   ├── model/
-│   │       │   ├── repository/
-│   │       │   └── service/
+│       │       │   ├── home/
+│       │       │   ├── product/
+│       │       │   └── productsapi/
 │   │       ├── main/resources/
 │   │       │   └── application.properties
 │   │       └── test/
@@ -200,7 +199,13 @@ BaseProyect/
 │           ├── static/
 │           │   ├── css/
 │           │   └── js/
+│           │       ├── product/
+│           │       └── products-api/
 │           └── templates/
+│               ├── product/
+│               │   ├── form.html
+│               │   └── list.html
+│               └── products-api/
 ├── packages/
 │   └── api-contract/
 ├── infra/
@@ -216,10 +221,8 @@ BaseProyect/
 The backend folder contains:
 
 - Spring Boot application.
-- Controllers.
-- Services.
-- Repositories.
-- Product model.
+- Feature packages for home, local products, and external API products.
+- Product entity, controller, service, and repository in the `product` package.
 - Database configuration.
 - Java tests.
 
@@ -229,7 +232,7 @@ The frontend folder contains:
 
 - HTML templates.
 - CSS files.
-- JavaScript files.
+- JavaScript files grouped by feature.
 - Frontend package information.
 
 ### Packages folder
@@ -271,6 +274,15 @@ database passwords. Then start the application and database with:
 docker compose up -d
 ```
 
+The Compose configuration also builds the application from the current
+workspace before starting it. This ensures local code changes are included.
+To force a clean rebuild, run:
+
+```powershell
+docker compose build --no-cache app
+docker compose up -d --force-recreate
+```
+
 The application is available at `http://localhost:8080/products` and
-`http://localhost:8080/products-1`. The MySQL data is persisted in the
+`http://localhost:8080/products-api`. The MySQL data is persisted in the
 `mysql_data` Docker volume.
